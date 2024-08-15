@@ -5,16 +5,16 @@
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0 font-size-18">Sales Product List</h4>
-                <div>
-                    <form action="{{ route('sales.download') }}" method="GET" class="m-5">
+                <div class="#">
+                    <form action="{{ route('sales.download') }}" class="m-5" method="GET">
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="createdAt">Sales Date</label>
-                                <input type="date" id="createdAt" name="createdAt" class="form-control" required>
+                                <input type="date" class="form-control" name="createdAt" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="productName">Product Name</label>
-                                <input type="text" id="productName" name="productName" class="form-control"
+                                <input type="text" class="form-control" name="productName"
                                     placeholder="Enter product name">
                             </div>
                         </div>
@@ -29,6 +29,11 @@
                 <div>
                     <div class="d-flex">
                         <div class="me-2">
+                            <span class="m-2"></span>
+                            {{-- Uncomment if you want to add Excel upload functionality
+                            <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"
+                                class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</button>
+                            --}}
                             <a href="{{ route('sales.create') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn">New Sales</a>
                         </div>
@@ -54,24 +59,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @php $i = 1 @endphp
-                                @foreach ($products as $item)
-                                    <tr>
-                                        <td>{{ $i++ }}</td>
-                                        <td class="text-capitalize">{{ $item->name }} <br>
-                                            <small>{{ $item->qr_code }}</small>
-                                        </td>
-                                        <td>{{ $item->sku }}</td>
-                                        <td>{{ $item->startDate }}</td>
-                                        <td>{{ $item->endDate }}</td>
-                                        <td style="width: 150px">
-                                            <a href="{{ route('sales.edit', $item->id) }}"
-                                                class="btn btn-sm btn-primary">Edit</a>
-                                            <a href="{{ route('sales.detail', $item->id) }}"
-                                                class="btn btn-sm btn-success">Detail</a>
-                                        </td>
-                                    </tr>
-                                @endforeach --}}
+
                             </tbody>
                         </table>
                     </div>
@@ -129,8 +117,8 @@
         };
 
         // Show a toast notification if there is an error flash message
-        @if (session('error'))
-            toastr.error("{{ session('error') }}");
+        @if (session()->get('error'))
+            toastr.error("{{ session()->get('error') }}");
         @endif
     </script>
 @endsection
