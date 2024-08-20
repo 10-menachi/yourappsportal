@@ -42,6 +42,12 @@
                                                 Edit </a>
                                             <a href="{{ route('categories.show', $item) }}" class="btn btn-sm btn-success">
                                                 Detail </a>
+                                            <form action="{{ route('categories.destroy', $item) }}" method="POST"
+                                                style="display: inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
