@@ -30,10 +30,9 @@
                     <div class="d-flex">
                         <div class="me-2">
                             <span class="m-2"></span>
-                            {{-- Uncomment if you want to add Excel upload functionality
-                            <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"
-                                class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</button>
-                            --}}
+                            {{-- <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"
+                                class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</button> --}}
+
                             <a href="{{ route('sales.create') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn">New Sales</a>
                         </div>
@@ -80,7 +79,7 @@
                 <div class="modal-body" style="min-height: 200px">
                     <form action="{{ route('sales.upload') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input required="required" type="file" name="file" class="form-control mb-3">
+                        <input type="file" name="file" class="form-control mb-3" required>
                         <button class="btn btn-primary w-100" type="submit">Upload File</button>
                     </form>
                 </div>

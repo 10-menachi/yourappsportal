@@ -31,9 +31,11 @@
 
                             </svg>
 
-                            <h3 class="h2 mb-4">Products ( {{ 17 }} )</h3>
+                            {{-- Show total count of product  --}}
+                            {{-- <h3 class="h2 mb-4">Products ( {{ $totalRecordsPosts }} )</h3> --}}
+                            <h3 class="h2 mb-4">Products ( {{ 12 }} )</h3>
 
-                            <a href="{{ route('products') }}" class="fw-bold text-decoration-none link-primary">
+                            <a href="{{ route('products.index') }}" class="fw-bold text-decoration-none link-primary">
                                 products page
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-arrow-right-short" viewBox="0 0 16 16">
@@ -174,7 +176,8 @@
                                 </g>
 
                             </svg>
-                            <h3 class="h2 mb-4">Sales( {{ 18 }})</h3>
+                            {{-- <h3 class="h2 mb-4">Sales( {{ $totalSales }})</h3> --}}
+                            <h3 class="h2 mb-4">Sales( {{ 12 }})</h3>
                             <a href="{{ route('sales.index') }}" class="fw-bold text-decoration-none link-primary">
                                 Sales Page
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -229,8 +232,9 @@
                                 </g>
 
                             </svg>
-                            <h3 class="h2 mb-4">Categories ( {{ 19 }} )</h3>
-                            <a href="{{ route('categories') }}" class="fw-bold text-decoration-none link-primary">
+                            {{-- <h3 class="h2 mb-4">Categories ( {{ $totalCategories }} )</h3> --}}
+                            <h3 class="h2 mb-4">Categories ( {{ 12 }} )</h3>
+                            <a href="{{ route('categories.index') }}" class="fw-bold text-decoration-none link-primary">
                                 Products Categories page
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
