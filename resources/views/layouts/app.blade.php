@@ -5,6 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <title>{{ config('app.name', 'Your Apps Portal') }}</title>
 
@@ -14,9 +21,28 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/e53bf7a0b8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tiny.cloud/1/dpzmx8wergucv5gzdrwxdo8tp46wwu509iyibow90tmnwfl5/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/app-rtl.min.css', 'resources/css/app.min.css', 'resources/css/bootstrap-rtl.min.css', 'resources/css/bootstrap.css', 'resources/css/bootstrap.min.css', 'resources/css/icons-rtl.min.css', 'resources/css/icons.css', 'resources/css/icons.min.css'])
+
+    <style>
+        #layout-wrapper.sidebar-open .sidebar {
+            transform: translateX(0);
+        }
+
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+    </style>
+
 </head>
 
 <body data-sidebar="dark">
@@ -49,7 +75,7 @@
 
                     <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect"
                         id="vertical-menu-btn">
-                        <i class="mdi mdi-menu"></i>
+                        <i class="fa-solid fa-bars"></i>
                     </button>
 
                 </div>
@@ -61,7 +87,7 @@
                         <button type="button" class="btn header-item noti-icon waves-effect"
                             id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
-                            <i class="mdi mdi-bell-outline"></i>
+                            <i class="fa-solid fa-bell"></i>
                             <span class="badge bg-danger rounded-pill">3</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
@@ -79,7 +105,7 @@
                                         <div class="flex-shrink-0 me-3">
                                             <div class="avatar-xs">
                                                 <span class="avatar-title bg-success rounded-circle font-size-16">
-                                                    <i class="mdi mdi-cart-outline"></i>
+                                                    <i class="fa-solid fa-cart-shopping"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -98,7 +124,7 @@
                                         <div class="flex-shrink-0 me-3">
                                             <div class="avatar-xs">
                                                 <span class="avatar-title bg-warning rounded-circle font-size-16">
-                                                    <i class="mdi mdi-message-text-outline"></i>
+                                                    <i class="fa-solid fa-message"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -116,7 +142,7 @@
                                         <div class="flex-shrink-0 me-3">
                                             <div class="avatar-xs">
                                                 <span class="avatar-title bg-info rounded-circle font-size-16">
-                                                    <i class="mdi mdi-glass-cocktail"></i>
+                                                    <i class="fa-solid fa-martini-glass-citrus"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -134,7 +160,8 @@
                                         <div class="flex-shrink-0 me-3">
                                             <div class="avatar-xs">
                                                 <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                                    <i class="mdi mdi-cart-outline"></i>
+                                                    <i class="fa-solid fa-cart-shopping"></i>
+
                                                 </span>
                                             </div>
                                         </div>
@@ -153,7 +180,7 @@
                                         <div class="flex-shrink-0 me-3">
                                             <div class="avatar-xs">
                                                 <span class="avatar-title bg-danger rounded-circle font-size-16">
-                                                    <i class="mdi mdi-message-text-outline"></i>
+                                                    <i class="fa-solid fa-message"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -185,7 +212,7 @@
                         <div class="dropdown-menu dropdown-menu-end">
                             <!-- item-->
                             <a class="dropdown-item" href="#"><i
-                                    class="mdi mdi-account-circle font-size-17 align-middle me-1"></i> Profile</a>
+                                    class="fa-solid fa-user font-size-17 align-middle me-1"></i> Profile</a>
 
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="{{ asset('logout') }}"><i
@@ -225,6 +252,14 @@
 
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('vertical-menu-btn').addEventListener('click', function() {
+                document.getElementById('layout-wrapper').classList.toggle('sidebar-open');
+            });
+        });
+    </script>
     @yield('modal')
     @stack('modal')
     @yield('script')

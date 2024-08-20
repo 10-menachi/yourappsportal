@@ -16,11 +16,18 @@
                 </ol>
             </div>
             <div class="col-md-4">
-                <div class="d-flex align-items-center justify-content-center">
-                    <a href="{{ route('sales.index') }}" class="btn btn-primary waves-effect waves-light me-2">Back</a>
-                    <input type="number" id="duplicateCount" class="form-control me-2" placeholder="Number of Duplicates"
-                        min="1">
-                    <button class="btn btn-primary waves-effect waves-light" id="duplicateFormBtn">Duplicate</button>
+                <div class="d-flex align-items-center justify-content-end">
+                    <div class="me-2">
+                        <a href="{{ route('sales.index') }}"
+                            class="btn btn-primary waves-effect waves-light submitBtn">Back</a>
+                    </div>
+                    <div class="me-2">
+                        <input type="number" id="duplicateCount" class="form-control" placeholder="Number of Duplicates"
+                            min="1">
+                    </div>
+                    <div>
+                        <button class="btn btn-primary waves-effect waves-light" id="duplicateFormBtn">Duplicate</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,9 +94,6 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script>
         function initForm(form) {
             tinymce.init({
