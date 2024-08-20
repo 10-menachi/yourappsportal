@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ProductController extends Controller
 {
@@ -77,9 +78,13 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $qrcode = base64_encode(QrCode::format('png')
+            ->size(300)
+            ->generate('https://yourapps.co.ke/product-sales/' . $product->qr_code));
+        return view('products.show', compact('product', 'qrcode'));
     }
 
     /**

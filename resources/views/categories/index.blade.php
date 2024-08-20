@@ -40,8 +40,6 @@
                                         <td style="width: 150px;">
                                             <a href="{{ route('categories.edit', $item) }}" class="btn btn-sm btn-primary">
                                                 Edit </a>
-                                            <a href="{{ route('categories.show', $item) }}" class="btn btn-sm btn-success">
-                                                Detail </a>
                                             <form action="{{ route('categories.destroy', $item) }}" method="POST"
                                                 style="display: inline">
                                                 @csrf

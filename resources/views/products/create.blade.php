@@ -59,8 +59,8 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="mb-1">QR Code</label>
-                                    <input type="text" class="form-control" placeholder="QR Code" name="qr_code"
-                                        required>
+                                    <input type="text" class="form-control" id="qrCodeInput" placeholder="QR Code"
+                                        name="qr_code" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -89,4 +89,18 @@
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrCodeInput = document.getElementById('qrCodeInput');
+
+            qrCodeInput.addEventListener('input', function() {
+                // Extract the part of the URL after the slash
+                const url = qrCodeInput.value;
+                const parts = url.split('/');
+                if (parts.length > 1) {
+                    qrCodeInput.value = parts.pop();
+                }
+            });
+        });
+    </script>
 @endsection
