@@ -23,3 +23,5 @@ Route::get('sales/download', [SaleController::class, 'download'])->middleware('a
 Route::get('sales/upload', [SaleController::class, 'download'])->middleware('auth')->name('sales.upload');
 Route::resource('products', ProductController::class)->middleware('auth');
 Route::resource('categories', ProductCategoryController::class)->middleware('auth');
+Route::get('categories/download', [ProductCategoryController::class, 'download'])->middleware('auth')->name('categories.download');
+Route::get('categories/upload', [ProductCategoryController::class, 'download'])->middleware('auth')->name('categories.upload');
