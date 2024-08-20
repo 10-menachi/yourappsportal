@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-    <!-- start page title -->
     <div class="page-title-box">
         <div class="row align-items-center">
             <div class="col-md-8">
@@ -17,7 +16,7 @@
                 </ol>
             </div>
             <div class="col-md-4">
-                <div class="d-flex align-items-center justify-content-end">
+                <div class="d-flex align-items-center justify-content-center">
                     <a href="{{ route('sales.index') }}" class="btn btn-primary waves-effect waves-light me-2">Back</a>
                     <input type="number" id="duplicateCount" class="form-control me-2" placeholder="Number of Duplicates"
                         min="1">
@@ -182,7 +181,7 @@
                         const newForm = originalForm.clone(true).removeClass('formTemplate');
                         newForm.find('#sku').val(skuValue).trigger('input');
                         newForm.find('#product').val(productSelect).trigger(
-                        'change'); // Preserve selected product
+                            'change'); // Preserve selected product
 
                         const catSelect = newForm.find('#category');
                         catSelect.val(categorySelect).trigger('change'); // Trigger change to load products

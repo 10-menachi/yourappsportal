@@ -23,8 +23,6 @@
 
     <!-- Begin page -->
     <div id="layout-wrapper">
-
-
         <header id="page-topbar">
             <div class="navbar-header">
                 <div class="d-flex">
@@ -201,7 +199,7 @@
 
         @include('components.sidebar')
 
-        <div class="main-content">
+        <div class="main-content" style="margin-right: 0 !important;">
 
             <div class="page-content">
                 <div class="container-fluid">
