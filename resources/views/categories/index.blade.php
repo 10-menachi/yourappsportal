@@ -4,11 +4,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Product Categories List</h4>
+                <h4 class="mb-sm-0 font-size-18">Categories</h4>
                 <div>
                     <div class="d-flex">
                         <div class="me-2">
-                            <a href="{{ route('categories.download') }}"
+                            <a href="{{ route('categories.file.download') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn">Excel</a>
                             <a href="{{ route('categories.create') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn">Create</a>
