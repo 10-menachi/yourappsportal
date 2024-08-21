@@ -10,11 +10,11 @@
     <div class="page-title-box">
         <div class="row align-items-center">
             <div class="col-md-8">
-                <h6 class="page-title">Create Product</h6>
+                <h6 class="page-title">{{ $product->name }}</h6>
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
                 </ol>
             </div>
             <div class="col-md-4">
@@ -62,21 +62,17 @@
                                         name="model_number" required value="{{ $product->model_number }}">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="mb-1">QR Code</label>
-                                    <input type="text" class="form-control" placeholder="QR Code" name="qr_code" required
-                                        value="{{ $product->qr_code }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="mb-1">Description</label>
-                                    <input type="text" class="form-control" placeholder="Description" name="desc"
-                                        value="{{ $product->description }}">
-                                </div>
-                                <div class="col-md-6 mb-3">
                                     <label class="mb-1">Price</label>
                                     <input type="number" class="form-control" placeholder="Price" name="price"
                                         value="{{ $product->price }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="mb-1">Description</label>
+                                    <textarea class="form-control" placeholder="Description" name="desc" id="editor">
+                                        {{ $product->description }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div id="submitContainer" class="col-md-12 mb-3">
@@ -95,4 +91,9 @@
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: '#editor'
+        });
+    </script>
 @endsection

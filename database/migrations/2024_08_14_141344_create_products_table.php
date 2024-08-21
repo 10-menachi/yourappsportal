@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->string('name');
             $table->string('model_number');
-            $table->string('qr_code');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->nullable();
 

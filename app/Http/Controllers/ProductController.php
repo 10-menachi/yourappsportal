@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductsExport;
+use App\Imports\ProductsImport;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Exception;
@@ -9,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ProductController extends Controller
 {
@@ -43,7 +47,6 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:product_categories,id',
                 'name' => 'required|string|max:255',
                 'model_number' => 'required|unique:products|string|max:255',
-                'qr_code' => 'required|unique:products|string|max:255',
                 'desc' => 'nullable|string',
                 'price' => 'nullable|numeric',
             ]);
@@ -58,7 +61,6 @@ class ProductController extends Controller
                 'category_id' => $data['category_id'],
                 'name' => $data['name'],
                 'model_number' => $data['model_number'],
-                'qr_code' => $data['qr_code'],
                 'description' => $data['desc'],
                 'price' => $data['price'],
             ]);
@@ -77,10 +79,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
-    {
-        //
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -105,7 +104,6 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:product_categories,id',
                 'name' => 'required|string|max:255',
                 'model_number' => 'required|string|max:255',
-                'qr_code' => 'required|string|max:255',
                 'desc' => 'nullable|string',
                 'price' => 'nullable|numeric',
             ]);
@@ -121,7 +119,6 @@ class ProductController extends Controller
                 'category_id' => $data['category_id'],
                 'name' => $data['name'],
                 'model_number' => $data['model_number'],
-                'qr_code' => $data['qr_code'],
                 'description' => $data['desc'],
                 'price' => $data['price'],
             ]);
@@ -154,5 +151,44 @@ class ProductController extends Controller
             Log::error($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function upload()
+    {
+        return view('products.excel');
+    }
+
+    public function uploadStore(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+
+            $validator = Validator::make($data, [
+                'file' => 'required|mimes:xlsx,xls',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', $validator->errors()->first());
+            }
+
+            $file = $request->file('file');
+
+            Excel::import(new ProductsImport, $file);
+
+            DB::commit();
+
+            return redirect()->route('products.index')->with('success', 'Products uploaded successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::info('CATEGORIES EXCEL ERROR');
+            Log::info($e);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function download()
+    {
+        return Excel::download((new ProductsExport), 'products.xlsx');
     }
 }

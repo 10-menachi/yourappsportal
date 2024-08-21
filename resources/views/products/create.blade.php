@@ -27,8 +27,6 @@
             </div>
         </div>
     </div>
-    <!-- End Page Title -->
-
     <form id="salesForm" action="{{ route('products.store') }}" method="post">
         @csrf
         <div id="formContainer" class="formContainer">
@@ -58,19 +56,14 @@
                                         name="model_number" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="mb-1">QR Code</label>
-                                    <input type="text" class="form-control" placeholder="QR Code" name="qr_code"
-                                        required>
+                                    <label class="mb-1">Price</label>
+                                    <input type="number" class="form-control" placeholder="Price" name="price">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label class="mb-1">Description</label>
-                                    <input type="text" class="form-control" placeholder="Description" name="desc">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="mb-1">Price</label>
-                                    <input type="number" class="form-control" placeholder="Price" name="price">
+                                    <textarea class="form-control" placeholder="Description" name="desc" id="editor"></textarea>
                                 </div>
                             </div>
                             <div id="submitContainer" class="col-md-12 mb-3">
@@ -85,8 +78,12 @@
 @endsection
 
 @section('script')
-    <!-- Include JavaScript files -->
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: '#editor'
+        });
+    </script>
 @endsection

@@ -19,9 +19,13 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::resource('sales', SaleController::class)->middleware('auth');
-Route::get('sales/download', [SaleController::class, 'download'])->middleware('auth')->name('sales.download');
-Route::get('sales/upload', [SaleController::class, 'download'])->middleware('auth')->name('sales.upload');
+Route::get('sales/file/download', [SaleController::class, 'download'])->middleware('auth')->name('sales.file.download');
+Route::get('sales/file/upload', [SaleController::class, 'upload'])->middleware('auth')->name('sales.file.upload');
 Route::resource('products', ProductController::class)->middleware('auth');
+Route::get('products/file/download', [ProductController::class, 'download'])->middleware('auth')->name('products.file.download');
+Route::get('products/file/upload', [ProductController::class, 'upload'])->middleware('auth')->name('products.file.upload');
+Route::post('products/file/upload', [ProductController::class, 'uploadStore'])->middleware('auth')->name('products.file.upload');
 Route::resource('categories', ProductCategoryController::class)->middleware('auth');
-Route::get('categories/download', [ProductCategoryController::class, 'download'])->middleware('auth')->name('categories.download');
-Route::get('categories/upload', [ProductCategoryController::class, 'download'])->middleware('auth')->name('categories.upload');
+Route::get('categories/file/download', [ProductCategoryController::class, 'download'])->middleware('auth')->name('categories.file.download');
+Route::get('categories/file/upload', [ProductCategoryController::class, 'upload'])->middleware('auth')->name('categories.file.upload');
+Route::post('categories/file/upload', [ProductCategoryController::class, 'uploadStore'])->middleware('auth')->name('categories.file.upload');
