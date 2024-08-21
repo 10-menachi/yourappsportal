@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -252,7 +257,39 @@
 
     </div>
 
+    @include ('categories.excel')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('a[data-toggle="modal"]').on('click', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+
+                $.ajax({
+                    url: url,
+                    success: function(response) {
+                        $('#modalContent').html(response);
+                        console.log('RESPONSE', response);
+
+                        setTimeout(function() {
+                            var modalEl = document.getElementById('modal');
+                            console.log('Modal Element:', modalEl); // Debugging line
+                            if (modalEl) {
+                                var modalInstance = new bootstrap.Modal(modalEl);
+                                modalInstance.show();
+                            } else {
+                                console.error('Modal element not found');
+                            }
+                        }, 100);
+                    }
+
+                });
+            });
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('vertical-menu-btn').addEventListener('click', function() {
