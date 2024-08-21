@@ -104,9 +104,52 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sale $sale)
+    public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+
+            $rules = [
+                'categoryId' => 'required|integer|exists:product_categories,id',
+                'productId' => 'required|integer|exists:products,id',
+                'startDate' => 'required|date|date_format:Y-m-d',
+                'endDate' => 'required|date|date_format:Y-m-d|after_or_equal:startDate',
+                'qr_code' => 'required|string',
+                'price' => 'nullable|numeric|min:0',
+                'sku' => 'required|string|max:255',
+                'description' => 'nullable|string',
+            ];
+
+            $validator = Validator::make($data, $rules);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', $validator->errors()->first());
+            }
+
+            $sale = Sale::findOrFail($id);
+
+            $sale->update([
+                'category_id' => $data['categoryId'],
+                'product_id' => $data['productId'],
+                'warranty_start_date' => $data['startDate'],
+                'warranty_end_date' => $data['endDate'],
+                'qr_code' => $data['qr_code'],
+                'price' => $data['price'],
+                'description' => $data['description'],
+                'sku' => $data['sku'],
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('sales.index')->with('success', 'Sale updated successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::info('UPDATE SALE ERROR');
+            Log::info($e);
+
+            return redirect()->back()->with('error', 'Error updating sale');
+        }
     }
 
     /**

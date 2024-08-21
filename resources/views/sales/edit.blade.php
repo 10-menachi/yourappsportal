@@ -67,19 +67,31 @@
                             <div class="col-md-3 mb-3">
                                 <label class="mb-1">Warranty Start Date</label>
                                 <input type="text" class="form-control startDate" placeholder="Warranty Start Date"
-                                    name="startDate" required value="{{ $sale['startDate'] }}">
+                                    name="startDate" required value="{{ $sale['warranty_start_date'] }}">
                             </div>
 
                             <div class="col-md-3 mb-3">
                                 <label class="mb-1">Warranty End Date</label>
                                 <input type="text" class="form-control endDate" placeholder="Warranty End Date"
-                                    name="endDate" required value="{{ $sale['endDate'] }}">
+                                    name="endDate" required value="{{ $sale['warranty_start_date'] }}">
                             </div>
 
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="mb-1">Product Qr Code</label>
                                 <input type="text" class="form-control" required placeholder="Product Qr Code"
                                     name="qr_code" value="{{ $sale['qr_code'] }}">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="mb-1">Price</label>
+                                <input type="number" class="form-control" required placeholder="Price" name="price"
+                                    value="{{ $sale->product['price'] }}">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="mb-1">SKU</label>
+                                <input type="text" class="form-control" required placeholder="SKU" name="sku"
+                                    value="{{ $sale->product['model_number'] }}">
                             </div>
 
                             <div class="col-md-12 mb-3">
@@ -105,6 +117,7 @@
     <script src="{{ asset('vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         tinymce.init({
             selector: '#tinymceTextArea',
@@ -143,21 +156,29 @@
 
         $("#category").on("change", function(e) {
             e.preventDefault();
+
+            // Clear existing options
             $("#product").find(".drop").remove();
-            axiosWithLoader.post("{{ route('api.products.categories') }}", $.param({
-                'categoryId': $(this).val()
-            })).then(function(response) {
-                console.log(response);
-                let res = response.data;
-                if (res.status === true) {
-                    $.each(res.data, function(index, val) {
-                        let zHtml = '<option class="drop" data-sku="' + val.sku + '" value="' + val
-                            .post_id + '" >' + val.title + '</option>';
-                        $("#product").append(zHtml);
-                    });
+
+            axios.get("{{ route('api.products.categories') }}", {
+                params: {
+                    'categoryId': $(this).val()
                 }
-            })
+            }).then(function(response) {
+                $("#product").empty();
+                let res = response.data;
+                $.each(res.data, function(index, val) {
+                    console.log('VAL: ', val);
+                    let zHtml = '<option class="drop" data-sku="' + val.model_number + '" value="' +
+                        val.id + '" >' + val.name + '</option>';
+                    $("#product").append(zHtml);
+                });
+            }).catch(function(error) {
+                // Handle errors
+                console.error('Error fetching products:', error);
+            });
         });
+
 
         $("#product").on('change', function(e) {
             e.preventDefault();
