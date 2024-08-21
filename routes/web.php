@@ -4,10 +4,16 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
+use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\Sale;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('dashboard');
+    $products = Product::count();
+    $sales = Sale::count();
+    $categories = ProductCategory::count();
+    return view('dashboard', compact('products', 'sales', 'categories'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

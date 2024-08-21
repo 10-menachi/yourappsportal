@@ -31,12 +31,10 @@
 
                             </svg>
 
-                            {{-- Show total count of product  --}}
-                            {{-- <h3 class="h2 mb-4">Products ( {{ $totalRecordsPosts }} )</h3> --}}
-                            <h3 class="h2 mb-4">Products ( {{ 12 }} )</h3>
+                            <h3 class="h2 mb-4">Products ({{ $products }})</h3>
 
                             <a href="{{ route('products.index') }}" class="fw-bold text-decoration-none link-primary">
-                                products page
+                                Products
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-arrow-right-short" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd"
@@ -176,10 +174,9 @@
                                 </g>
 
                             </svg>
-                            {{-- <h3 class="h2 mb-4">Sales( {{ $totalSales }})</h3> --}}
-                            <h3 class="h2 mb-4">Sales( {{ 12 }})</h3>
+                            <h3 class="h2 mb-4">Sales({{ $sales }})</h3>
                             <a href="{{ route('sales.index') }}" class="fw-bold text-decoration-none link-primary">
-                                Sales Page
+                                Sales
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd"
@@ -232,10 +229,9 @@
                                 </g>
 
                             </svg>
-                            {{-- <h3 class="h2 mb-4">Categories ( {{ $totalCategories }} )</h3> --}}
-                            <h3 class="h2 mb-4">Categories ( {{ 12 }} )</h3>
+                            <h3 class="h2 mb-4">Categories ({{ $categories }})</h3>
                             <a href="{{ route('categories.index') }}" class="fw-bold text-decoration-none link-primary">
-                                Products Categories page
+                                Categories
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd"

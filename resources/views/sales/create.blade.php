@@ -2,6 +2,7 @@
 
 @section('style')
     <link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('path/to/parsley.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -32,9 +33,8 @@
             </div>
         </div>
     </div>
-    <!-- end page title -->
 
-    <form id="salesForm" action="{{ route('sales.create') }}" method="post">
+    <form id="salesForm" action="{{ route('sales.store') }}" method="post">
         @csrf
         <div id="formContainer">
             <div class="row">
@@ -47,7 +47,7 @@
                                     <select class="form-control" id="category" name="sales[0][categoryId]" required>
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $cat)
-                                            <option value="{{ $cat['term_id'] }}">{{ $cat['name'] }}</option>
+                                            <option value="{{ $cat['id'] }}">{{ $cat['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label class="mb-1">Additional Description</label>
-                                    <textarea id="tinymceTextArea" name="sales[0][description]" class="form-control" rows="5"></textarea>
+                                    <textarea class="form-control" placeholder="Description" name="sales[0][description]" id="description"></textarea>
                                 </div>
                             </div>
                             <div id="submitContainer" class="col-md-3 mb-3">
@@ -94,8 +94,14 @@
 @endsection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script>
         function initForm(form) {
+            // Initialize TinyMCE editor
             tinymce.init({
                 selector: form.find('#tinymceTextArea')[0],
                 plugins: ['paste', 'lists', 'code', 'table', 'link', 'preview'],
@@ -111,6 +117,7 @@
                 toolbar: 'undo redo | styleselect | bold italic | link | alignleft aligncenter alignright | code | template | preview',
             });
 
+            // Initialize date pickers
             let startpicker = flatpickr(form.find(".startDate")[0], {
                 enableTime: false,
                 dateFormat: "Y-m-d",
@@ -128,31 +135,54 @@
                 },
             });
 
+            // Handle category change
             form.find("#category").on("change", function(e) {
                 e.preventDefault();
                 let form = $(this).closest('.formTemplate');
                 let productSelect = form.find("#product");
                 productSelect.empty().append('<option value="">Select Product</option>');
-                axios.post("{{ route('api.products.categories') }}", {
-                    categoryId: $(this).val()
-                }).then(function(response) {
-                    let res = response.data;
-                    if (res.status) {
-                        $.each(res.data, function(index, val) {
-                            let option =
-                                `<option class="drop" data-sku="${val.sku}" value="${val.post_id}">${val.title}</option>`;
-                            productSelect.append(option);
-                        });
+                axios.get("{{ route('api.products.categories') }}", {
+                    params: {
+                        categoryId: $(this).val()
                     }
+                }).then(function(response) {
+                    let products = response.data.data;
+                    $.each(products, function(index, val) {
+                        let option =
+                            `<option class="drop" value="${val.id}" data-model="${val.model_number}">${val.name}</option>`;
+                        productSelect.append(option);
+                    });
+                }).catch(function(error) {
+                    alert('An error occurred while fetching products');
                 });
+                $('.formTemplate').find('#category').val($(this).val());
             });
 
+            // Handle product change
             form.find("#product").on('change', function(e) {
                 e.preventDefault();
-                let sku = $(this).find(':selected').data('sku');
-                form.find("#sku").val(sku);
+                let selectedOption = $(this).find(':selected');
+                let modelNumber = selectedOption.data('model');
+                $('.formTemplate').find('#sku').val(modelNumber);
+                $('.formTemplate').find('#product').val($(this).val());
             });
 
+            // handle warranty start date change
+            form.find('.startDate').on('change', function() {
+                $('.formTemplate').find('.startDate').val($(this).val());
+            });
+
+            // handle warranty end date change
+            form.find('.endDate').on('change', function() {
+                $('.formTemplate').find('.endDate').val($(this).val());
+            });
+
+            // handle description change
+            form.find('#description').on('change', function() {
+                $('.formTemplate').find('#description').val($(this).val());
+            });
+
+            // QR code input handling
             form.find('.qr-code-input').on('input', function() {
                 let qrCodeValue = $(this).val();
                 let lastSlashIndex = qrCodeValue.lastIndexOf('/');
@@ -161,12 +191,17 @@
                 }
             });
 
-            form.parsley({
-                errorClass: 'is-invalid',
-                successClass: 'is-valid',
-                errorsWrapper: '<ul class="parsley-errors-list list-unstyled"></ul>',
-                errorTemplate: '<li class="parsley-error text-danger font-size-10"></li>'
-            });
+            // Initialize Parsley for validation
+            if (typeof $.fn.parsley === 'function') {
+                form.parsley({
+                    errorClass: 'is-invalid',
+                    successClass: 'is-valid',
+                    errorsWrapper: '<ul class="parsley-errors-list list-unstyled"></ul>',
+                    errorTemplate: '<li class="parsley-error text-danger font-size-10"></li>'
+                });
+            } else {
+                alert('Parsley is not available!');
+            }
         }
 
         $(document).ready(function() {
@@ -174,37 +209,33 @@
 
             $('#duplicateFormBtn').on('click', function(e) {
                 e.preventDefault();
-                const duplicateCount = parseInt($('#duplicateCount').val());
+                const duplicateCount = parseInt($('#duplicateCount').val(), 10);
                 const originalForm = $('.formTemplate').first();
-                const categorySelect = originalForm.find('#category').val();
-                const productSelect = originalForm.find('#product').val();
-                const skuValue = originalForm.find('#sku').val();
 
                 if (duplicateCount > 0) {
                     for (let i = 0; i < duplicateCount; i++) {
-                        const newForm = originalForm.clone(true).removeClass('formTemplate');
-                        newForm.find('#sku').val(skuValue).trigger('input');
-                        newForm.find('#product').val(productSelect).trigger(
-                            'change'); // Preserve selected product
-
-                        const catSelect = newForm.find('#category');
-                        catSelect.val(categorySelect).trigger('change'); // Trigger change to load products
-
-                        // Ensure the QR code field is blank in the new form
-                        newForm.find('.qr-code-input').val('').trigger('input');
-
-                        // Update form field names to include the index
+                        const newForm = originalForm.clone(true);
                         newForm.find('input, select, textarea').each(function() {
-                            let name = $(this).attr('name');
-                            $(this).attr('name', name.replace(/\[\d+\]/, `[${i + 1}]`));
+                            const name = $(this).attr('name');
+                            $(this).attr('name', name.replace('[0]', '[' + (i + 1) + ']'));
                         });
-
-                        // Initialize the cloned form with TinyMCE, flatpickr, etc., just like the original
+                        newForm.find('#category').val(originalForm.find('#category').val());
+                        newForm.find('#product').val(originalForm.find('#product').val());
+                        newForm.find('#warrantyStartDate').val(originalForm.find('#warrantyStartDate')
+                        .val());
+                        newForm.find('#warrantyEndDate').val(originalForm.find('#warrantyEndDate').val());
+                        newForm.find('#sku').val(originalForm.find('#sku').val());
+                        newForm.find('#description').val(originalForm.find('#description').val());
+                        $('#formContainer').append(newForm);
                         initForm(newForm);
-
-                        // Append the cloned form before the submit container
-                        $('#submitContainer').before(newForm);
                     }
+                }
+            });
+
+            $('#salesForm').on('submit', function(e) {
+                e.preventDefault();
+                if ($(this).parsley().isValid()) {
+                    $(this).off('submit').submit();
                 }
             });
         });
