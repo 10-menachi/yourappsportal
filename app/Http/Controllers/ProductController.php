@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProductsExport;
+use App\Imports\ProductsImport;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Exception;
@@ -148,6 +149,40 @@ class ProductController extends Controller
             DB::rollBack();
             Log::error('ERROR');
             Log::error($e);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function upload()
+    {
+        return view('products.excel');
+    }
+
+    public function uploadStore(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+
+            $validator = Validator::make($data, [
+                'file' => 'required|mimes:xlsx,xls',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', $validator->errors()->first());
+            }
+
+            $file = $request->file('file');
+
+            Excel::import(new ProductsImport, $file);
+
+            DB::commit();
+
+            return redirect()->route('products.index')->with('success', 'Products uploaded successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::info('CATEGORIES EXCEL ERROR');
+            Log::info($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
