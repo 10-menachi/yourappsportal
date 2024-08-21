@@ -70,7 +70,7 @@
                                     <td>{{ $sale['sku'] }}</td>
                                     <td>{{ $sale['warranty_start_date'] }}</td>
                                     <td>{{ $sale['warranty_end_date'] }}</td>
-                                    <td>{{ $sale['description'] }}</td>
+                                    <td>{!! $sale['description'] !!}</td>
                                     <td>{{ $sale->product->price }}</td>
                                     <td style="width: 150px">
                                         <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-sm btn-primary">
