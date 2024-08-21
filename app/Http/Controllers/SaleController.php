@@ -84,17 +84,21 @@ class SaleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sale $sale)
+    public function show($id)
     {
-        //
+        $sale = Sale::findOrFail($id);
+        return view('sales.edit', compact('sale'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Sale $sale)
+    public function edit($id)
     {
-        //
+        $sale = Sale::findOrFail($id);
+        $categories = ProductCategory::all();
+        $products = Product::where('category_id', $sale->category_id)->get();
+        return view('sales.edit', compact('sale', 'categories', 'products'));
     }
 
     /**
