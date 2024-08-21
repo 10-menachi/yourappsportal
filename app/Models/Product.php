@@ -13,7 +13,6 @@ class Product extends Model
         'category_id',
         'name',
         'model_number',
-        'qr_code',
         'description',
         'price',
     ];

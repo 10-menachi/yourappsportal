@@ -36,7 +36,7 @@
                                     {{ Log::info($item) }}
                                     <tr>
                                         <td class="text-capitalize">{{ $item['name'] }} </td>
-                                        <td style="text-align: center;">{{ $item['description'] ?? '-' }}</td>
+                                        <td style="text-align: center;">{!! $item['description'] ?? '-' !!}</td>
                                         <td style="width: 150px;">
                                             <a href="{{ route('categories.edit', $item) }}" class="btn btn-sm btn-primary">
                                                 Edit </a>

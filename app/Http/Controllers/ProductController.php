@@ -44,7 +44,6 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:product_categories,id',
                 'name' => 'required|string|max:255',
                 'model_number' => 'required|unique:products|string|max:255',
-                'qr_code' => 'required|unique:products|string|max:255',
                 'desc' => 'nullable|string',
                 'price' => 'nullable|numeric',
             ]);
@@ -59,7 +58,6 @@ class ProductController extends Controller
                 'category_id' => $data['category_id'],
                 'name' => $data['name'],
                 'model_number' => $data['model_number'],
-                'qr_code' => $data['qr_code'],
                 'description' => $data['desc'],
                 'price' => $data['price'],
             ]);
@@ -78,14 +76,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        $product = Product::findOrFail($id);
-        $qrcode = base64_encode(QrCode::format('png')
-            ->size(300)
-            ->generate('https://yourapps.co.ke/product-sales/' . $product->qr_code));
-        return view('products.show', compact('product', 'qrcode'));
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -110,7 +101,6 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:product_categories,id',
                 'name' => 'required|string|max:255',
                 'model_number' => 'required|string|max:255',
-                'qr_code' => 'required|string|max:255',
                 'desc' => 'nullable|string',
                 'price' => 'nullable|numeric',
             ]);
@@ -126,7 +116,6 @@ class ProductController extends Controller
                 'category_id' => $data['category_id'],
                 'name' => $data['name'],
                 'model_number' => $data['model_number'],
-                'qr_code' => $data['qr_code'],
                 'description' => $data['desc'],
                 'price' => $data['price'],
             ]);

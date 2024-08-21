@@ -37,14 +37,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label class="mb-1">Name</label>
                                     <input type="text" class="form-control" placeholder="Name" name="name"
                                         required="required">
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label class="mb-1">Description</label>
-                                    <input type="text" class="form-control" placeholder="Description" name="desc">
+                                    <textarea class="form-control" placeholder="Description" name="desc" id="editor"></textarea>
                                 </div>
                             </div>
                             <div id="submitContainer" class="mb-3">
@@ -63,4 +63,9 @@
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: '#editor'
+        });
+    </script>
 @endsection

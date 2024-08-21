@@ -39,13 +39,11 @@
                                         <td>{{ $product->category->name }}</td>
                                         <td>{{ $product->name }}</td>
                                         <td>{{ $product->model_number }}</td>
-                                        <td style="text-align: center;">{{ $product->description ?? '-' }}</td>
+                                        <td style="text-align: center;">{!! $product->description ?? '-' !!}</td>
                                         <td style="text-align: center;">{{ $product->price ?? '-' }}</td>
                                         <td>
                                             <a href="{{ route('products.edit', $product->id) }}"
                                                 class="btn btn-primary waves-effect waves-light">Edit</a>
-                                            <a href="{{ route('products.show', $product->id) }}"
-                                                class="btn btn-info waves-effect waves-light">View</a>
                                             <form action="{{ route('products.destroy', $product->id) }}" method="POST"
                                                 style="display: inline">
                                                 @csrf
