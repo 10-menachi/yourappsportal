@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductsExport;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Exception;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ProductController extends Controller
@@ -148,5 +150,10 @@ class ProductController extends Controller
             Log::error($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function download()
+    {
+        return Excel::download((new ProductsExport), 'products.xlsx');
     }
 }

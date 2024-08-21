@@ -8,6 +8,8 @@
                 <div>
                     <div class="d-flex">
                         <div class="me-2">
+                            <a href="{{ route('products.file.download') }}"
+                                class="btn btn-primary waves-effect waves-light submitBtn">Excel</a>
                             <span class="m-2"></span>
                             <a href="{{ route('products.create') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn">Create</a>
