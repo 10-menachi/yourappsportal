@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SalesExport;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Sale;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SaleController extends Controller
@@ -167,5 +169,21 @@ class SaleController extends Controller
     public function upload()
     {
         return view('sales.excel');
+    }
+
+    public function download(Request $request)
+    {
+        try {
+            $data = $request->all();
+
+            $product = Product::findOrFail($data['product']);
+
+            return Excel::download(new SalesExport($data['createdAt'], $product), 'sales-' . $data['createdAt'] . '-' . $product->name . '.xlsx');
+        } catch (Exception $e) {
+            Log::info('DOWNLOAD SALES ERROR');
+            Log::info($e);
+
+            return redirect()->back()->with('error', 'Error downloading sales');
+        }
     }
 }
