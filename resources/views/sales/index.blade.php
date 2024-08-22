@@ -19,7 +19,6 @@
                                         <option value="{{ $product->id }}">{{ $product->name }}</option>
                                     @endforeach
                                 </select>
-
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -33,7 +32,8 @@
                 <div>
                     <div class="d-flex">
                         <div class="me-2">
-                            <a href="{{ route('sales.file.upload') }}"
+                            <!-- Updated to use data-bs attributes for triggering modal -->
+                            <a href="{{ route('sales.file.upload') }}" data-bs-toggle="modal" data-bs-target="#salesModal"
                                 class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</a>
                             <a href="{{ route('sales.create') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn">Create</a>
@@ -73,10 +73,10 @@
                                     <td>{!! $sale['description'] !!}</td>
                                     <td>{{ $sale->product->price }}</td>
                                     <td style="width: 150px">
-                                        <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-sm btn-primary">
-                                            Edit </a>
-                                        <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-sm btn-success">
-                                            Detail </a>
+                                        <a href="{{ route('sales.edit', $sale->id) }}"
+                                            class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{{ route('sales.show', $sale->id) }}"
+                                            class="btn btn-sm btn-success">Detail</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -91,21 +91,19 @@
 @endsection
 
 @section('script')
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script>
-        let dataTable = $("#dataTable");
-        $(dataTable).dataTable();
-    </script>
-    <script>
         $(document).ready(function() {
-            $('a[data-toggle="salesModal"]').on('click', function(e) {
+            $("#dataTable").dataTable();
+
+            $('a[data-bs-toggle="salesModal"]').on('click', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
 
                 $.ajax({
                     url: url,
                     success: function(response) {
-                        $('#modalContent').html(response);
                         var modalEl = document.getElementById('salesModal');
                         if (modalEl) {
                             var modalInstance = new bootstrap.Modal(modalEl);

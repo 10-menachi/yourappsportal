@@ -17,6 +17,9 @@ class ProductsImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+
+        Log::info('ROW');
+        Log::info($row);
         $category = ProductCategory::where('name', $row['category'])->first();
 
         if (!$category) {
