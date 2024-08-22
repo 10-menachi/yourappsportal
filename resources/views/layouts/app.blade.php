@@ -44,22 +44,21 @@
         <header id="page-topbar">
             <div class="navbar-header">
                 <div class="d-flex">
-                    <!-- LOGO -->
                     <div class="navbar-brand-box">
                         <a href="#" class="logo logo-dark">
                             <span class="logo-sm">
-                                <img src="{{ asset('images/logo-sm.png') }}" alt="" height="22">
+                                <img src="{{ asset('images/logo-sm.png') }}" alt="" height="40">
                             </span>
                             <span class="logo-lg">
-                                <img src="{{ asset('images/logo-dark.png') }}" alt="" height="17">
+                                <img src="{{ asset('images/logo-dark.png') }}" alt="" height="40">
                             </span>
                         </a>
                         <a href="{{ route('dashboard') }}" class="logo logo-light">
                             <span class="logo-sm">
-                                <img src="{{ asset('images/logo-sm.png') }}" alt="" height="22">
+                                <img src="{{ asset('images/logo-sm.png') }}" alt="" height="40">
                             </span>
                             <span class="logo-lg">
-                                <img src="{{ asset('images/logo-light.png') }}" alt="" height="18">
+                                <img src="{{ asset('images/logo-light.png') }}" alt="" height="40">
                             </span>
                         </a>
                     </div>
@@ -155,10 +154,9 @@
                 <div class="row">
                     <div class="col-12">
                         ©
-                        <script>
-                            document.write(new Date().getFullYear())
-                        </script> Veltrix<span class="d-none d-sm-inline-block"> - Crafted with <i
-                                class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
+                        {{ date('Y') }}
+                        <span class="d-none d-sm-inline-block"> YourAppsLtd
+                            &trade;</span>
                     </div>
                 </div>
             </div>
