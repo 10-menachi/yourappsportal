@@ -43,7 +43,7 @@
                                     <td>{{ $product->model_number }}</td>
                                     <td style="text-align: center;">{!! $product->description ?? '-' !!}</td>
                                     <td style="text-align: center;">{{ $product->price ?? '-' }}</td>
-                                    <td>
+                                    <td style="width: 150px;">
                                         <a href="{{ route('products.edit', $product->id) }}"
                                             class="btn btn-primary waves-effect waves-light">Edit</a>
                                         <form action="{{ route('products.destroy', $product->id) }}" method="POST"
