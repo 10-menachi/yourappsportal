@@ -41,7 +41,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body" id="formContainer">
-                            <div class="row formTemplate">
+                            <div class="row formTemplate" style="border-bottom: solid 2px gray; padding: 1rem">
                                 <div class="col-md-3 mb-3">
                                     <label class="mb-1">Select Category</label>
                                     <select class="form-control" id="category" name="sales[0][categoryId]" required>

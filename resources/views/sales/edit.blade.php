@@ -37,8 +37,8 @@
 
                             <div class="col-md-3 mb-3">
                                 <label class="mb-1">Model Number / Part Number</label>
-                                <input type="text" class="form-control" placeholder="Name" name="startDate" required
-                                    value="{{ $sale->sku }}">
+                                <input type="text" class="form-control" placeholder="Model Number / Part Number"
+                                    name="model_number" required value="{{ $sale->sku }}">
                             </div>
 
                             @php
