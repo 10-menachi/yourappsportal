@@ -1,0 +1,10 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "SalesExcelLogic" ]
+
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
