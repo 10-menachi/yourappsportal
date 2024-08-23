@@ -18,8 +18,8 @@ return new class extends Migration
             $table->date('warranty_start_date');
             $table->date('warranty_end_date');
             $table->string('qr_code');
-            $table->text('description');
-            $table->string('sku');
+            $table->text('description')->nullable();
+            $table->string('sku')->nullable();
 
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
