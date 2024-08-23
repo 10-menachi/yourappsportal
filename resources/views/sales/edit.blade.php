@@ -25,9 +25,6 @@
             </div>
         </div>
     </div>
-    <!-- end page title -->
-
-
 
     <div class="row">
         <div class="col-12">
@@ -37,71 +34,53 @@
                         @csrf
                         @method('PUT')
                         <div class="row">
+
                             <div class="col-md-3 mb-3">
-                                <label class="mb-1">Category</label>
-                                <select id="category" name="categoryId" class="form-control" required>
-                                    <option value="" disabled selected>Select Category</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ $category->id == $sale['category_id'] ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label class="mb-1">Model Number / Part Number</label>
+                                <input type="text" class="form-control" placeholder="Name" name="startDate" required
+                                    value="{{ $sale->sku }}">
                             </div>
+
+                            @php
+                                $product = $products->first(function ($item) use ($sale) {
+                                    return $item->model_number === $sale->sku;
+                                });
+                            @endphp
 
                             <div class="col-md-3 mb-3">
                                 <label class="mb-1">Product</label>
-                                <select id="product" name="productId" class="form-control" required>
-                                    <option value="" disabled selected>Select Product</option>
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            {{ $product->id == $sale['product_id'] ? 'selected' : '' }}>
-                                            {{ $product->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control" placeholder="Name" name="startDate" required
+                                    readonly value="{{ $product->name }}">
                             </div>
-
 
                             <div class="col-md-3 mb-3">
                                 <label class="mb-1">Warranty Start Date</label>
                                 <input type="text" class="form-control startDate" placeholder="Warranty Start Date"
-                                    name="startDate" required value="{{ $sale['warranty_start_date'] }}">
+                                    name="startDate" required readonly value="{{ $sale->startDate }}">
                             </div>
 
                             <div class="col-md-3 mb-3">
                                 <label class="mb-1">Warranty End Date</label>
                                 <input type="text" class="form-control endDate" placeholder="Warranty End Date"
-                                    name="endDate" required value="{{ $sale['warranty_start_date'] }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="mb-1">Product Qr Code</label>
-                                <input type="text" class="form-control" required placeholder="Product Qr Code"
-                                    name="qr_code" value="{{ $sale['qr_code'] }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="mb-1">Price</label>
-                                <input type="number" class="form-control" required placeholder="Price" name="price"
-                                    value="{{ $sale->product['price'] }}">
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="mb-1">SKU</label>
-                                <input type="text" class="form-control" required placeholder="SKU" name="sku"
-                                    value="{{ $sale->product['model_number'] }}">
+                                    name="endDate" required readonly value="{{ $sale->endDate }}">
                             </div>
 
                             <div class="col-md-12 mb-3">
-                                <label class="mb-1">Additional Description</label>
-                                <textarea id="tinymceTextArea" name="description" class="form-control" rows="5">{{ $sale['description'] }}</textarea>
+                                <label class="mb-1">QR Code</label>
+                                <input type="text" class="form-control" placeholder="QR Code" name="qr_code" required
+                                    readonly value="{{ $sale->qr_code }}">
                             </div>
 
-                            <div class="col-md-3 mb-3">
-                                <button class="btn btn-primary" type="submit">Submit</button>
+                            <div class="col-md-12 mb-3">
+                                <label class="mb-1">Description</label>
+                                <textarea class="form-control" placeholder="Description" name="desc" id="editor">
+                                    {{ $sale->description }}
+                                </textarea>
                             </div>
+
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <button class="btn btn-primary" type="submit">Submit</button>
                         </div>
                     </form>
 
@@ -191,6 +170,11 @@
             successClass: 'is-valid',
             errorsWrapper: '<ul class="parsley-errors-list list-unstyled"></ul>',
             errorTemplate: '<li class="parsley-error text-danger font-size-10"></li>'
+        });
+    </script>
+    <script>
+        tinymce.init({
+            selector: '#editor'
         });
     </script>
 @endsection

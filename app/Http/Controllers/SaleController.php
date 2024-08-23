@@ -158,7 +158,7 @@ class SaleController extends Controller
     {
         $sale = Sale::findOrFail($id);
         $categories = ProductCategory::all();
-        $products = Product::where('category_id', $sale->category_id)->get();
+        $products = Product::all();
         return view('sales.edit', compact('sale', 'categories', 'products'));
     }
 
