@@ -36,6 +36,9 @@ jobs:
       - name: Link Storage
         run: php artisan storage:link
 
+      - name: Generate App Key
+        run: php artisan key:generate
+
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-action@4.0.0
         with:
