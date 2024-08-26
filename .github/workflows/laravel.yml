@@ -1,8 +1,9 @@
-name: Laravel
+name: Your Apps Ltd Portal
 
 on:
   push:
     branches: ["SalesExcelLogic"]
+  workflow_dispatch:
 
 jobs:
   web-deploy:
@@ -18,11 +19,15 @@ jobs:
         with:
           php-version: "8.2"
           extensions: mbstring, mysqli, bcmath, imagick
+
       - name: Update Composer Packages
         run: composer update
 
       - name: Copy .env file
         run: cp .env.example .env
+
+      - name: Generate Application Key
+        run: php artisan key:generate --force
 
       - name: Clear Composer cache
         run: composer clear-cache
@@ -35,6 +40,31 @@ jobs:
 
       - name: Link Storage
         run: php artisan storage:link
+
+      - name: Clear Caches
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan route:clear
+          php artisan view:clear
+
+      - name: Optimize Laravel
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          php artisan optimize
+
+      - name: Install Node.js and NPM (Optional)
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+
+      - name: Install NPM Dependencies (Optional)
+        run: npm install
+
+      - name: Build Frontend Assets (Optional)
+        run: npm run prod
 
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-action@4.0.0
