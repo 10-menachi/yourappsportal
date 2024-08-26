@@ -59,4 +59,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           dry-run: false
-          strategy: incremental
+          local-dir: public
+          server-dir: /public_html
+          strategy: changed
+          
