@@ -231,8 +231,18 @@
                                     class="fa-solid fa-user font-size-17 align-middle me-1"></i> Profile</a>
 
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="{{ asset('logout') }}"><i
-                                    class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Logout</a>
+                            {{-- <a class="dropdown-item text-danger" href="{{ asset('logout') }}"><i
+                                    class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Logout</a> --}}
+
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+
                         </div>
                     </div>
 
