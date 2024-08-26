@@ -52,14 +52,11 @@ jobs:
       - name: Build Frontend Assets (Optional)
         run: npm run build
 
-      - name: Sync files
-        uses: SamKirkland/FTP-Deploy-action@4.0.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          dry-run: false
-          local-dir: public
-          server-dir: /public_html
-          strategy: changed
-          
+      # - name: Sync files
+      #   uses: SamKirkland/FTP-Deploy-action@4.0.0
+      #   with:
+      #     server: ${{ secrets.FTP_SERVER }}
+      #     username: ${{ secrets.FTP_USERNAME }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     dry-run: false
+      #     strategy: incremental
