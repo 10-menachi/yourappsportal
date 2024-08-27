@@ -9,15 +9,12 @@ class Sale extends Model
 {
     use HasFactory;
 
-
-    protected $table = "sales";
-
     protected $fillable = [
-        'category_id',
+        'name',
         'product_id',
-        'warranty_start_date',
-        'warranty_end_date',
-        'qr_code',
+        'sku',
+        'category_id',
+        'slug',
         'description',
         'sku',
     ];

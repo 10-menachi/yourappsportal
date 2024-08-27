@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Log::info('SALE') }}
     {{ Log::info($sale) }}
     <div class="row">
         <div class="col-12">
@@ -33,7 +34,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="mb-1 fw-bold">Product</div>
-                            <div class="form-control" required>{{ $sale->product->name }}</div>
+                            <div class="form-control" required>{{ $sale->product->name ?? '-' }}</div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="mb-1 fw-bold">Warranty Start</div>

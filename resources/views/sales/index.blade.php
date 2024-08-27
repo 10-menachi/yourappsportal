@@ -50,13 +50,10 @@
                     <table id="dataTable" class="table align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="align-middle">Category</th>
-                                <th class="align-middle">Product</th>
+                                <th class="align-middle">Name</th>
                                 <th class="align-middle">SKU</th>
                                 <th class="align-middle">Warranty Start</th>
                                 <th class="align-middle">Warranty End</th>
-                                <th class="align-middle">Description</th>
-                                <th class="align-middle">Price</th>
                                 <th class="align-middle">Actions</th>
                             </tr>
                         </thead>
@@ -66,12 +63,9 @@
                                     <td class="text-capitalize">{{ $sale->pro_category()->name ?? '-' }} <br>
                                         <small>{{ $sale['qr_code'] }}</small>
                                     </td>
-                                    <td>{{ $sale->product->name }}</td>
-                                    <td>{{ $sale['sku'] }}</td>
-                                    <td>{{ $sale['warranty_start_date'] }}</td>
-                                    <td>{{ $sale['warranty_end_date'] }}</td>
-                                    <td>{!! $sale['description'] !!}</td>
-                                    <td>{{ $sale->product->price ?? '-' }}</td>
+                                    <td>{{ $sale->sku }}</td>
+                                    <td>{{ $sale->startDate }}</td>
+                                    <td>{{ $sale->endDate }}</td>
                                     <td style="width: 150px">
                                         <a href="{{ route('sales.edit', $sale->id) }}"
                                             class="btn btn-sm btn-primary">Edit</a>
