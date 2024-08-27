@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label class="mb-1">Description</label>
-                                    <textarea class="form-control" placeholder="Description" name="desc" id="editor">{{ $category->description }}</textarea>
+                                    <textarea class="form-control" placeholder="Description" name="desc">{{ $category->description }}</textarea>
                                 </div>
                             </div>
                             <div id="submitContainer" class="mb-3">

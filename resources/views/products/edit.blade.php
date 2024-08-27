@@ -70,7 +70,7 @@
                             <div class="row">
                                 <div class="col-md-12 mb-3">
                                     <label class="mb-1">Description</label>
-                                    <textarea class="form-control" placeholder="Description" name="desc" id="editor">
+                                    <textarea class="form-control" placeholder="Description" name="desc">
                                         {{ $product->description }}
                                     </textarea>
                                 </div>
