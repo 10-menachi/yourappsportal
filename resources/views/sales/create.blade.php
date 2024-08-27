@@ -36,12 +36,12 @@
 
     <form id="salesForm" action="{{ route('sales.store') }}" method="post">
         @csrf
-        <div id="formContainer">
+        <div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="row formTemplate">
+                        <div class="card-body" id="formContainer">
+                            <div class="row formTemplate" style="border-bottom: solid 2px gray; padding: 1rem">
                                 <div class="col-md-3 mb-3">
                                     <label class="mb-1">Select Category</label>
                                     <select class="form-control" id="category" name="sales[0][categoryId]" required>
@@ -82,9 +82,9 @@
                                     <textarea class="form-control" placeholder="Description" name="sales[0][description]" id="description"></textarea>
                                 </div>
                             </div>
-                            <div id="submitContainer" class="col-md-3 mb-3">
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                            </div>
+                        </div>
+                        <div id="submitContainer" class="col-md-3 mb-3">
+                            <button class="btn btn-primary" type="submit">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -222,7 +222,7 @@
                         newForm.find('#category').val(originalForm.find('#category').val());
                         newForm.find('#product').val(originalForm.find('#product').val());
                         newForm.find('#warrantyStartDate').val(originalForm.find('#warrantyStartDate')
-                        .val());
+                            .val());
                         newForm.find('#warrantyEndDate').val(originalForm.find('#warrantyEndDate').val());
                         newForm.find('#sku').val(originalForm.find('#sku').val());
                         newForm.find('#description').val(originalForm.find('#description').val());

@@ -10,22 +10,23 @@ class Sale extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
+        'name',
         'product_id',
-        'warranty_start_date',
-        'warranty_end_date',
-        'qr_code',
-        'description',
         'sku',
+        'category_id',
+        'slug',
+        'description',
+        'salesPrice',
+        'costPrice',
+        'startDate',
+        'endDate',
+        'qr_code',
+        'isDelete',
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(ProductCategory::class, 'category_id');
-    }
+    // Optionally, if you're not using the default timestamps, you can disable it
+    public $timestamps = true;
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id');
-    }
+    // Optionally, if you need custom date formats
+    protected $dates = ['created_at', 'updated_at'];
 }
