@@ -10,7 +10,19 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/app-rtl.min.css', 'resources/css/app.min.css', 'resources/css/bootstrap-rtl.min.css', 'resources/css/bootstrap.css', 'resources/css/bootstrap.min.css', 'resources/css/icons-rtl.min.css', 'resources/css/icons.css', 'resources/css/icons.min.css'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/app-rtl.min.css', 'resources/css/app.min.css', 'resources/css/bootstrap-rtl.min.css', 'resources/css/bootstrap.css', 'resources/css/bootstrap.min.css', 'resources/css/icons-rtl.min.css', 'resources/css/icons.css', 'resources/css/icons.min.css']) --}}
+
+    <link href="{{ asset('resources/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/app-rtl.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/app.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/bootstrap-rtl.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/icons-rtl.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/icons.min.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('resources/js/app.js') }}"></script>
 
 </head>
 

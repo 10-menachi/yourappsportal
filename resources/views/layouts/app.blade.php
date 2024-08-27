@@ -16,14 +16,29 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/e53bf7a0b8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tiny.cloud/1/dpzmx8wergucv5gzdrwxdo8tp46wwu509iyibow90tmnwfl5/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
+    <!-- Scripts -->
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/app-rtl.min.css', 'resources/css/app.min.css', 'resources/css/bootstrap-rtl.min.css', 'resources/css/bootstrap.css', 'resources/css/bootstrap.min.css', 'resources/css/icons-rtl.min.css', 'resources/css/icons.css', 'resources/css/icons.min.css']) --}}
+    <link href="{{ asset('resources/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/app-rtl.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/app.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/bootstrap-rtl.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/icons-rtl.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/css/icons.min.css') }}" rel="stylesheet">
 
-    <!-- Additional Stylesheets -->
-    @vite(['resources/css/app.css', 'resources/css/app-rtl.min.css', 'resources/css/app.min.css', 'resources/css/bootstrap-rtl.min.css', 'resources/css/bootstrap.min.css', 'resources/css/icons-rtl.min.css', 'resources/css/icons.css', 'resources/css/icons.min.css'])
+    <script src="{{ asset('resources/js/app.js') }}"></script>
 
-    <!-- Inline Styles -->
+
     <style>
         #layout-wrapper.sidebar-open .sidebar {
             transform: translateX(0);
@@ -127,41 +142,51 @@
                             <a class="dropdown-item" href="#"><i
                                     class="fa-solid fa-user font-size-17 align-middle me-1"></i> Profile</a>
                             <div class="dropdown-divider"></div>
-                            <form action="{{ route('logout') }}" method="POST">
+                            {{-- <a class="dropdown-item text-danger" href="{{ asset('logout') }}"><i
+                                    class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Logout</a> --}}
+
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
-                                <button class="dropdown-item text-danger" type="submit"><i
-                                        class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i>
-                                    Logout</button>
                             </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        @include('components.sidebar')
+
+        <div class="main-content" style="margin-right: 0 !important;">
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> Veltrix<span class="d-none d-sm-inline-block"> - Crafted with <i
+                                    class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
                         </div>
                     </div>
                 </div>
-            </div>
-    </div>
-    </header>
+            </footer>
 
-    @include('components.sidebar')
-
-    <div class="main-content" style="margin-right: 0 !important;">
-        <div class="page-content">
-            <div class="container-fluid">
-                @yield('content')
-            </div>
         </div>
 
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        ©
-                        {{ date('Y') }}
-                        <span class="d-none d-sm-inline-block"> YourAppsLtd
-                            &trade;</span>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
     </div>
 
     <!-- Scripts -->
