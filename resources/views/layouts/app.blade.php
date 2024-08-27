@@ -171,19 +171,22 @@
             </div>
         </div>
 
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        ©
-                        {{ date('Y') }}
-                        <span class="d-none d-sm-inline-block"> YourAppsLtd
-                            &trade;</span>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> <span class="d-none d-sm-inline-block"> <a class="#"
+                                    href="https://yourapps.co.ke/">Your Apps Ltd</a>.</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </footer>
-    </div>
+            </footer>
+
+        </div>
+
     </div>
 
     <!-- Scripts -->
