@@ -13,17 +13,19 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('product_id');
-            $table->date('warranty_start_date');
-            $table->date('warranty_end_date');
-            $table->string('qr_code');
-            $table->text('description');
-            $table->string('sku');
-
-            $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->timestamps();
+            $table->string('name', 199);
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->string('sku', 199)->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->string('slug', 199);
+            $table->longText('description');
+            $table->string('salesPrice', 199)->nullable();
+            $table->string('costPrice', 199)->nullable();
+            $table->string('startDate', 199)->nullable();
+            $table->string('endDate', 199)->nullable();
+            $table->string('qr_code', 199);
+            $table->tinyInteger('isDelete')->default(0);
+            $table->timestamps(); // This will add created_at and updated_at columns
         });
     }
 

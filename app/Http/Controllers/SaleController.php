@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Str;
 
 class SaleController extends Controller
 {
@@ -39,37 +40,96 @@ class SaleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+
+    //     Log::info('Data from the sales Form :  ' . json_encode($request->all()));
+    //     DB::beginTransaction();
+    //     try {
+    //         $data = $request->all();
+    //         $sales = $data['sales'];
+
+    //         $validator = Validator::make($data, [
+    //             'sales' => 'required|array',
+    //             'sales.*.categoryId' => 'required|integer|exists:product_categories,id',
+    //             'sales.*.productId' => 'required|integer|exists:products,id',
+    //             'sales.*.startDate' => 'required|date|date_format:Y-m-d',
+    //             'sales.*.endDate' => 'required|date|date_format:Y-m-d|after_or_equal:sales.*.startDate',
+    //             'sales.*.qr_code' => 'required|string|max:255',
+    //             'sales.*.sku' => 'required|string|max:255',
+    //             'sales.*.description' => 'required|string|max:255',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             return redirect()->back()->with('error', $validator->errors()->first());
+    //         }
+
+    //         foreach ($sales as $sale) {
+    //             Sale::create([
+    //                 'category_id' => $sale['categoryId'],
+    //                 'product_id' => $sale['productId'],
+    //                 'warranty_start_date' => $sale['startDate'],
+    //                 'warranty_end_date' => $sale['endDate'],
+    //                 'qr_code' => $sale['qr_code'],
+    //                 'description' => $sale['description'],
+    //                 'sku' => $sale['sku'],
+    //             ]);
+    //         }
+
+    //         DB::commit();
+
+    //         return redirect()->route('sales.index')->with('success', 'Sales created successfully');
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         Log::info('CREATE SALE ERROR');
+    //         Log::info($e);
+
+    //         return redirect()->back()->with('error', 'Error creating sale');
+    //     }
+    // }
+
+
+
     public function store(Request $request)
     {
         DB::beginTransaction();
         try {
             $data = $request->all();
-            $sales = $data['sales'];
 
             $validator = Validator::make($data, [
-                'sales' => 'required|array',
                 'sales.*.categoryId' => 'required|integer|exists:product_categories,id',
                 'sales.*.productId' => 'required|integer|exists:products,id',
-                'sales.*.startDate' => 'required|date|date_format:Y-m-d',
-                'sales.*.endDate' => 'required|date|date_format:Y-m-d|after_or_equal:sales.*.startDate',
+                'sales.*.startDate' => 'nullable|date_format:Y-m-d',
+                'sales.*.endDate' => 'nullable|date_format:Y-m-d|after_or_equal:sales.*.startDate',
                 'sales.*.qr_code' => 'required|string|max:255',
-                'sales.*.sku' => 'required|string|max:255',
-                'sales.*.description' => 'required|string|max:255',
+                'sales.*.sku' => 'nullable|string|max:199',
+                'sales.*.description' => 'nullable|string|max:65535',
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->with('error', $validator->errors()->first());
             }
 
+            $sales = $data['sales'];
+
             foreach ($sales as $sale) {
+                Log::info('SALE');
+                Log::info($sale);
+                $product = Product::find($sale['productId']);
+                $name = $product->name . $sale['sku'] ?? $product->model_number;
+                $slug = Str::slug($name);
                 Sale::create([
+                    'name' => $name,
                     'category_id' => $sale['categoryId'],
                     'product_id' => $sale['productId'],
-                    'warranty_start_date' => $sale['startDate'],
-                    'warranty_end_date' => $sale['endDate'],
-                    'qr_code' => $sale['qr_code'],
-                    'description' => $sale['description'],
                     'sku' => $sale['sku'],
+                    'slug' => $slug,
+                    'description' => $sale['description'],
+                    'salesPrice' => $product->price ?? null,
+                    'costPrice' => $product->cost_price ?? null,
+                    'startDate' => $sale['startDate'],
+                    'endDate' => $sale['endDate'],
+                    'qr_code' => $sale['qr_code'],
                 ]);
             }
 
@@ -78,12 +138,13 @@ class SaleController extends Controller
             return redirect()->route('sales.index')->with('success', 'Sales created successfully');
         } catch (Exception $e) {
             DB::rollBack();
-            Log::info('CREATE SALE ERROR');
-            Log::info($e);
+            Log::error('CREATE SALE ERROR:'); // Adjusted error logging
+            Log::error($e); // Log the stack trace for debugging
 
             return redirect()->back()->with('error', 'Error creating sale');
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -104,7 +165,7 @@ class SaleController extends Controller
     {
         $sale = Sale::findOrFail($id);
         $categories = ProductCategory::all();
-        $products = Product::where('category_id', $sale->category_id)->get();
+        $products = Product::all();
         return view('sales.edit', compact('sale', 'categories', 'products'));
     }
 
@@ -117,34 +178,32 @@ class SaleController extends Controller
         try {
             $data = $request->all();
 
-            $rules = [
-                'categoryId' => 'required|integer|exists:product_categories,id',
-                'productId' => 'required|integer|exists:products,id',
-                'startDate' => 'required|date|date_format:Y-m-d',
-                'endDate' => 'required|date|date_format:Y-m-d|after_or_equal:startDate',
-                'qr_code' => 'required|string',
-                'price' => 'nullable|numeric|min:0',
-                'sku' => 'required|string|max:255',
-                'description' => 'nullable|string',
-            ];
-
-            $validator = Validator::make($data, $rules);
+            $validator = Validator::make($data, [
+                'model_number' => 'required|string|max:199',
+                'startDate' => 'nullable|date_format:Y-m-d',
+                'endDate' => 'nullable|date_format:Y-m-d|after_or_equal:sales.*.startDate',
+                'qr_code' => 'required|string|max:255',
+                'desc' => 'nullable|string|max:65535',
+            ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->with('error', $validator->errors()->first());
             }
 
             $sale = Sale::findOrFail($id);
+            $product = Product::where('model_number', $sale['sku'])->first();
+
+            $name = $product->name . $sale['sku'] ?? $product->model_number;
+            $slug = Str::slug($name);
 
             $sale->update([
-                'category_id' => $data['categoryId'],
-                'product_id' => $data['productId'],
-                'warranty_start_date' => $data['startDate'],
-                'warranty_end_date' => $data['endDate'],
+                'name' => $name,
+                'sku' => $data['model_number'],
+                'slug' => $slug,
+                'description' => $data['desc'],
+                'startDate' => $data['startDate'],
+                'endDate' => $data['endDate'],
                 'qr_code' => $data['qr_code'],
-                'price' => $data['price'],
-                'description' => $data['description'],
-                'sku' => $data['sku'],
             ]);
 
             DB::commit();
