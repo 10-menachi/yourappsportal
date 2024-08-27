@@ -267,8 +267,8 @@
                             ©
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Veltrix<span class="d-none d-sm-inline-block"> - Crafted with <i
-                                    class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
+                            </script> <span class="d-none d-sm-inline-block"> <a class="#"
+                                    href="https://yourapps.co.ke/">Your Apps Ltd</a>.</span>
                         </div>
                     </div>
                 </div>
