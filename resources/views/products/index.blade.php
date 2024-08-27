@@ -38,7 +38,7 @@
                         <tbody>
                             @foreach ($products as $product)
                                 <tr>
-                                    <td>{{ $product->category->name }}</td>
+                                    <td>{{ $product->pro_category()->name ?? '-' }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->model_number }}</td>
                                     <td style="text-align: center;">{!! $product->description ?? '-' !!}</td>

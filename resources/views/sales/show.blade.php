@@ -29,7 +29,7 @@
                     <div class="row my-3">
                         <div class="col-md-4 mb-3">
                             <div class="mb-1 fw-bold">Category</div>
-                            <div class="form-control" required>{{ $sale->category->name }}</div>
+                            <div class="form-control" required>{{ $sale->pro_category()->name ?? '-' }}</div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="mb-1 fw-bold">Product</div>
@@ -37,11 +37,11 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="mb-1 fw-bold">Warranty Start</div>
-                            <div class="form-control" required>{{ $sale->warranty_start_date }}</div>
+                            <div class="form-control" required>{{ $sale->startDate }}</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <div class="mb-1 fw-bold">Warranty End</div>
-                            <div class="form-control" required>{{ $sale->warranty_end_date }}</div>
+                            <div class="form-control" required>{{ $sale->endDate }}</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <div class="mb-1 fw-bold">SKU</div>

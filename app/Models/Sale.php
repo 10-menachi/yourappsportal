@@ -22,9 +22,10 @@ class Sale extends Model
         'sku',
     ];
 
-    public function category()
+    public function pro_category()
     {
-        return $this->belongsTo(ProductCategory::class, 'category_id');
+        $category = ProductCategory::where('id', '=', $this->category_id)->first();
+        return $category;
     }
 
     public function product()

@@ -96,28 +96,10 @@
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script>
         function initForm(form) {
-            // Initialize TinyMCE editor
-            tinymce.init({
-                selector: form.find('#tinymceTextArea')[0],
-                plugins: ['paste', 'lists', 'code', 'table', 'link', 'preview'],
-                branding: false,
-                menubar: 'file edit insert view format table tools help',
-                toolbar_sticky: true,
-                height: 350,
-                paste_as_text: true,
-                paste_enable_default_filters: true,
-                relative_urls: false,
-                remove_script_host: false,
-                convert_urls: true,
-                toolbar: 'undo redo | styleselect | bold italic | link | alignleft aligncenter alignright | code | template | preview',
-            });
-
-            // Initialize date pickers
             let startpicker = flatpickr(form.find(".startDate")[0], {
                 enableTime: false,
                 dateFormat: "Y-m-d",
@@ -146,6 +128,8 @@
                         categoryId: $(this).val()
                     }
                 }).then(function(response) {
+                    console.log('RESPONSEEE');
+                    console.log(response);
                     let products = response.data.data;
                     $.each(products, function(index, val) {
                         let option =

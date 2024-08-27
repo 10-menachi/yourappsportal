@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Product extends Model
 {
@@ -17,8 +18,9 @@ class Product extends Model
         'price',
     ];
 
-    public function category()
+    public function pro_category()
     {
-        return $this->belongsTo(ProductCategory::class);
+        $category = ProductCategory::where('id', '=', $this->category_id)->first();
+        return $category;
     }
 }

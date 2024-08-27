@@ -63,7 +63,7 @@
                         <tbody>
                             @foreach ($sales as $sale)
                                 <tr>
-                                    <td class="text-capitalize">{{ $sale->product->category->name }} <br>
+                                    <td class="text-capitalize">{{ $sale->pro_category()->name ?? '-' }} <br>
                                         <small>{{ $sale['qr_code'] }}</small>
                                     </td>
                                     <td>{{ $sale->product->name }}</td>

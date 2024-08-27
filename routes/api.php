@@ -17,7 +17,7 @@ Route::get('products/categories', function (Request $request) {
 
         return response()->json([
             'message' => 'Product categories fetched successfully',
-            'data' => $category->products
+            'data' => $category->get_products()
         ], 200);
     } catch (Exception $e) {
         Log::info('FETCH CAT ERROR');
