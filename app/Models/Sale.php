@@ -29,4 +29,12 @@ class Sale extends Model
 
     // Optionally, if you need custom date formats
     protected $dates = ['created_at', 'updated_at'];
+
+
+    // In Sale.php
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
 }

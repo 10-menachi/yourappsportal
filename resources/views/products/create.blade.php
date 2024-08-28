@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <form id="salesForm" action="{{ route('products.store') }}" method="post">
+    <form id="salesForm" action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div id="formContainer" class="formContainer">
             <div class="row">
@@ -58,6 +58,12 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="mb-1">Price</label>
                                     <input type="number" class="form-control" placeholder="Price" name="price">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="mb-1">Product Image</label>
+                                    <input type="file" class="form-control" placeholder="Product Image" name="image">
                                 </div>
                             </div>
                             <div class="row">

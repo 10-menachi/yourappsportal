@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('model_number');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->nullable();
+            $table->string('avatar')->nullable();
 
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
             $table->timestamps();
