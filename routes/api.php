@@ -12,8 +12,12 @@ Route::get('/user', function (Request $request) {
 Route::get('products/categories', function (Request $request) {
     try {
         $data = $request->all();
+        Log::info('Request data: ', $data); 
+
 
         $category = ProductCategory::find($data['categoryId']);
+        Log::info('Category: ', $category ? $category->toArray() : 'Not found'); 
+
 
         return response()->json([
             'message' => 'Product categories fetched successfully',

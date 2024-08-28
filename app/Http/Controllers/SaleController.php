@@ -115,9 +115,17 @@ class SaleController extends Controller
             foreach ($sales as $sale) {
                 Log::info('SALE');
                 Log::info($sale);
+
+                // Extract the unique QR code if it's a full URL
+                $qrCode = $sale['qr_code'];
+                if (strpos($qrCode, 'https://yourapps.co.ke/product-sales/') === 0) {
+                    $qrCode = str_replace('https://yourapps.co.ke/product-sales/', '', $qrCode);
+                }
+
                 $product = Product::find($sale['productId']);
-                $name = $product->name . $sale['sku'] ?? $product->model_number;
+                $name = $product->name . ($sale['sku'] ?? $product->model_number);
                 $slug = Str::slug($name);
+
                 Sale::create([
                     'name' => $name,
                     'category_id' => $sale['categoryId'],
@@ -129,7 +137,7 @@ class SaleController extends Controller
                     'costPrice' => $product->cost_price ?? null,
                     'startDate' => $sale['startDate'],
                     'endDate' => $sale['endDate'],
-                    'qr_code' => $sale['qr_code'],
+                    'qr_code' => $qrCode,
                 ]);
             }
 
@@ -138,7 +146,7 @@ class SaleController extends Controller
             return redirect()->route('sales.index')->with('success', 'Sales created successfully');
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('CREATE SALE ERROR:'); // Adjusted error logging
+            Log::error('CREATE SALE ERROR: ' . $e->getMessage());
             Log::error($e); // Log the stack trace for debugging
 
             return redirect()->back()->with('error', 'Error creating sale');
@@ -177,11 +185,15 @@ class SaleController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
+            Log::info('Data from the form of update Sale : ');
+            Log::info($data);
 
+            // Validate the incoming request data
             $validator = Validator::make($data, [
-                'model_number' => 'required|string|max:199',
+                'category_id' => 'required|integer',
+                'product_id' => 'required|integer',
                 'startDate' => 'nullable|date_format:Y-m-d',
-                'endDate' => 'nullable|date_format:Y-m-d|after_or_equal:sales.*.startDate',
+                'endDate' => 'nullable|date_format:Y-m-d|after_or_equal:startDate',
                 'qr_code' => 'required|string|max:255',
                 'desc' => 'nullable|string|max:65535',
             ]);
@@ -190,20 +202,30 @@ class SaleController extends Controller
                 return redirect()->back()->with('error', $validator->errors()->first());
             }
 
+            // Find the Sale and Product records
             $sale = Sale::findOrFail($id);
-            $product = Product::where('model_number', $sale['sku'])->first();
+            $product = Product::findOrFail($data['product_id']);
 
-            $name = $product->name . $sale['sku'] ?? $product->model_number;
+            // Prepare updated data
+            $name = $product->name;
             $slug = Str::slug($name);
+            $costPrice = $product->price;
+            $salePrice = $product->price;
 
+            // Update the sale record with the new data
             $sale->update([
                 'name' => $name,
-                'sku' => $data['model_number'],
+                'product_id' => $product->id,
+                'sku' => $product->model_number,
+                'category_id' => $data['category_id'],
                 'slug' => $slug,
                 'description' => $data['desc'],
+                'salesPrice' => $salePrice,
+                'costPrice' => $costPrice,
                 'startDate' => $data['startDate'],
                 'endDate' => $data['endDate'],
                 'qr_code' => $data['qr_code'],
+                'isDelete' => 0,
             ]);
 
             DB::commit();
@@ -211,8 +233,7 @@ class SaleController extends Controller
             return redirect()->route('sales.index')->with('success', 'Sale updated successfully');
         } catch (Exception $e) {
             DB::rollBack();
-            Log::info('UPDATE SALE ERROR');
-            Log::info($e);
+            Log::error('UPDATE SALE ERROR: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'Error updating sale');
         }

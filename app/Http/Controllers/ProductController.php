@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\Product;
+use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Imports\ProductsImport;
-use App\Models\Product;
 use App\Models\ProductCategory;
-use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use League\Flysystem\SymbolicLinkEncountered;
 
 class ProductController extends Controller
 {
@@ -42,6 +44,8 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
+            Log::info('Data from the Form of Creating Product :');
+            Log::info($data);
 
             $validator = Validator::make($data, [
                 'category_id' => 'required|exists:product_categories,id',
@@ -49,6 +53,7 @@ class ProductController extends Controller
                 'model_number' => 'required|unique:products|string|max:255',
                 'desc' => 'nullable|string',
                 'price' => 'nullable|numeric',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -57,12 +62,21 @@ class ProductController extends Controller
                 return redirect()->back()->with('error', $validator->errors()->first());
             }
 
+            // Handle the image upload
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imagePath = $image->store('product-images', 'public');
+            }
+
+            // Create the product
             Product::create([
                 'category_id' => $data['category_id'],
                 'name' => $data['name'],
                 'model_number' => $data['model_number'],
                 'description' => $data['desc'],
                 'price' => $data['price'],
+                'avatar' => $imagePath,
             ]);
 
             DB::commit();
@@ -75,6 +89,7 @@ class ProductController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -99,13 +114,20 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
+            Log::info('Data from the form of update product');
+            Log::info($data);
+            $product = Product::findOrFail($id);
+            Log::info('product to be updated is ');
+            Log::info($product);
 
+            // Validate input
             $validator = Validator::make($data, [
                 'category_id' => 'required|exists:product_categories,id',
                 'name' => 'required|string|max:255',
-                'model_number' => 'required|string|max:255',
+                'model_number' => 'required|string|max:255|unique:products,model_number,' . $id,
                 'desc' => 'nullable|string',
                 'price' => 'nullable|numeric',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -114,13 +136,28 @@ class ProductController extends Controller
                 return redirect()->back()->with('error', $validator->errors()->first());
             }
 
-            $product = Product::findOrFail($id);
+            // Handle image upload
+            $imagePath = $product->avatar; // Keep old image path by default
+
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($product->avatar && Storage::exists('public/' . $product->avatar)) {
+                    Storage::delete('public/' . $product->avatar);
+                }
+
+                // Upload new image
+                $image = $request->file('image');
+                $imagePath = $image->store('product-images', 'public');
+            }
+
+            // Update product details
             $product->update([
                 'category_id' => $data['category_id'],
                 'name' => $data['name'],
                 'model_number' => $data['model_number'],
                 'description' => $data['desc'],
                 'price' => $data['price'],
+                'avatar' => $imagePath,
             ]);
 
             DB::commit();
@@ -133,6 +170,7 @@ class ProductController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
