@@ -30,7 +30,7 @@
                     <div class="row my-3">
                         <div class="col-md-4 mb-3">
                             <div class="mb-1 fw-bold">Category</div>
-                            <div class="form-control" required>{{ $sale->pro_category()->name ?? '-' }}</div>
+                            <div class="form-control" required>{{ $sale->product->category->name ?? '-' }}</div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="mb-1 fw-bold">Product</div>
@@ -54,7 +54,16 @@
                                 {!! $sale['description'] ?? '-' !!}
                             </div>
                         </div>
-
+                        <!-- Add Product Image -->
+                        <div class="col-md-12 mb-3">
+                            <div class="mb-1 fw-bold">Product Image</div>
+                            @if ($sale->product && $sale->product->avatar)
+                                <img src="{{ asset('storage/' . $sale->product->avatar) }}" alt="Product Image"
+                                     style="width: 200px; height: auto; object-fit: cover;">
+                            @else
+                                <p>No image available</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

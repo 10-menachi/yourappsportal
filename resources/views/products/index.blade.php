@@ -32,6 +32,7 @@
                                 <th class="align-middle">Model Number</th>
                                 <th class="align-middle">Description</th>
                                 <th class="align-middle">Price</th>
+                                <th class="align-middle">Image</th>
                                 <th class="align-middle">Actions</th>
                             </tr>
                         </thead>
@@ -43,6 +44,14 @@
                                     <td>{{ $product->model_number }}</td>
                                     <td style="text-align: center;">{!! $product->description ?? '-' !!}</td>
                                     <td style="text-align: center;">{{ $product->price ?? '-' }}</td>
+                                    <td style="text-align: center;">
+                                        @if ($product->avatar)
+                                            <img src="{{ asset('storage/' . $product->avatar) }}" alt="{{ $product->name }}"
+                                                style="max-width: 100px; max-height: 100px; object-fit: cover;">
+                                        @else
+                                            <span>-</span>
+                                        @endif
+                                    </td>
                                     <td style="width: 150px;">
                                         <a href="{{ route('products.edit', $product->id) }}"
                                             class="btn btn-primary waves-effect waves-light">Edit</a>

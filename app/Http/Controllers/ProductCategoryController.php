@@ -36,32 +36,45 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the incoming request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'desc' => 'nullable|string|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         DB::beginTransaction();
+
         try {
-            $data = $request->all();
+            // Use the name as the description if no description is provided
+            $description = $request->input('desc', strtolower($request->input('name')));
 
-            $validator = Validator::make($data, [
-                'name' => 'required|string|max:255',
-                'desc' => 'nullable|string|max:255',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()->with('error', $validator->errors()->first());
-            }
-
-            ProductCategory::create([
-                'name' => $data['name'],
-                'description' => $data['desc'],
+            // Create a new Product Category
+            $category = ProductCategory::create([
+                'name' => $request->input('name'),
+                'description' => $description,
             ]);
 
             DB::commit();
 
+            Log::info('Category created successfully', ['category_id' => $category->id]);
+
             return redirect()->route('categories.index')->with('success', 'Category created successfully');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', $e->getMessage());
+
+            Log::error('Failed to create category', [
+                'error' => $e->getMessage(),
+                'data' => $request->all()
+            ]);
+
+            return redirect()->back()->with('error', 'Failed to create category: ' . $e->getMessage())->withInput();
         }
     }
+
 
     /**
      * Display the specified resource.

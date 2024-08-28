@@ -16,17 +16,25 @@ class Sale extends Model
         'category_id',
         'slug',
         'description',
-        'sku',
+        'salesPrice',
+        'costPrice',
+        'startDate',
+        'endDate',
+        'qr_code',
+        'isDelete',
     ];
 
-    public function pro_category()
-    {
-        $category = ProductCategory::where('id', '=', $this->category_id)->first();
-        return $category;
-    }
+    // Optionally, if you're not using the default timestamps, you can disable it
+    public $timestamps = true;
 
+    // Optionally, if you need custom date formats
+    protected $dates = ['created_at', 'updated_at'];
+
+
+    // In Sale.php
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
 }

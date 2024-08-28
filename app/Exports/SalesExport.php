@@ -44,8 +44,8 @@ class SalesExport implements FromCollection, WithHeadings
             ->select(
                 'product_categories.name as Category',
                 'products.name as Product',
-                'sales.warranty_start_date as Warranty_Start_Date',
-                'sales.warranty_end_date as Warranty_End_Date',
+                'sales.startDate as Warranty_Start_Date',
+                'sales.endDate as Warranty_End_Date',
                 'sales.qr_code as QR_Code',
                 'sales.sku as SKU',
                 'sales.description as Description'
