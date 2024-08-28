@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Login | Portal YourApps</title>
+    <title>Login | Portal Your Apps Ltd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -41,7 +41,7 @@
                                 <div class="col-12 d-flex justify-content-center">
                                     <div class="p-3 text-center">
                                         <h5>Welcome Back!</h5>
-                                        <p>Sign in to YourApp</p>
+                                        <p>Sign in to Your Apps Ltd Portal.</p>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                     <p>©
                                         <script>
                                             document.write(new Date().getFullYear())
-                                        </script> YourApp
+                                        </script> Your Apps Ltd Portal
                                     </p>
                                 </div>
                             </div>
