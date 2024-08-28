@@ -25,9 +25,12 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::resource('sales', SaleController::class)->middleware('auth');
+
 Route::get('sales/file/download', [SaleController::class, 'download'])->middleware('auth')->name('sales.file.download');
+
 Route::get('sales/file/upload', [SaleController::class, 'upload'])->middleware('auth')->name('sales.file.upload');
 Route::post('sales/file/upload', [SaleController::class, 'uploadStore'])->middleware('auth')->name('sales.file.upload');
+
 Route::resource('products', ProductController::class)->middleware('auth');
 Route::get('products/file/download', [ProductController::class, 'download'])->middleware('auth')->name('products.file.download');
 Route::get('products/file/upload', [ProductController::class, 'upload'])->middleware('auth')->name('products.file.upload');

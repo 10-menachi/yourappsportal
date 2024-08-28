@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('sku', 199)->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('slug', 199);
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->string('salesPrice', 199)->nullable();
             $table->string('costPrice', 199)->nullable();
             $table->string('startDate', 199)->nullable();

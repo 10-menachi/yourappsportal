@@ -29,7 +29,8 @@
     </div>
     <!-- End Page Title -->
 
-    <form id="salesForm" action="{{ route('products.update', $product->id) }}" method="post">
+    <form id="salesForm" action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
+
         @csrf
         @method('PUT')
         <div id="formContainer" class="formContainer">
@@ -40,7 +41,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="mb-1">Category</label>
-                                    <select class="form-control" name="category_id" required="required">
+                                    <select class="form-control" name="category_id" required>
                                         <option value="">Select a Category</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
@@ -67,12 +68,29 @@
                                         value="{{ $product->price }}">
                                 </div>
                             </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="mb-1">Current Image</label>
+                                    <div>
+                                        @if ($product->avatar)
+                                            <img src="{{ asset('storage/' . $product->avatar) }}"
+                                                alt="{{ $product->name }}"
+                                                style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                        @else
+                                            <p>No image available</p>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="mb-1">Upload New Image</label>
+                                    <input type="file" class="form-control" name="image" accept="image/*">
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12 mb-3">
                                     <label class="mb-1">Description</label>
-                                    <textarea class="form-control" placeholder="Description" name="desc" >
-                                        {{ $product->description }}
-                                    </textarea>
+                                    <textarea class="form-control" placeholder="Description" name="desc">{{ $product->description }}</textarea>
                                 </div>
                             </div>
                             <div id="submitContainer" class="col-md-12 mb-3">
