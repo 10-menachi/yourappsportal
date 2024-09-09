@@ -40,55 +40,6 @@ class SaleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-
-    //     Log::info('Data from the sales Form :  ' . json_encode($request->all()));
-    //     DB::beginTransaction();
-    //     try {
-    //         $data = $request->all();
-    //         $sales = $data['sales'];
-
-    //         $validator = Validator::make($data, [
-    //             'sales' => 'required|array',
-    //             'sales.*.categoryId' => 'required|integer|exists:product_categories,id',
-    //             'sales.*.productId' => 'required|integer|exists:products,id',
-    //             'sales.*.startDate' => 'required|date|date_format:Y-m-d',
-    //             'sales.*.endDate' => 'required|date|date_format:Y-m-d|after_or_equal:sales.*.startDate',
-    //             'sales.*.qr_code' => 'required|string|max:255',
-    //             'sales.*.sku' => 'required|string|max:255',
-    //             'sales.*.description' => 'required|string|max:255',
-    //         ]);
-
-    //         if ($validator->fails()) {
-    //             return redirect()->back()->with('error', $validator->errors()->first());
-    //         }
-
-    //         foreach ($sales as $sale) {
-    //             Sale::create([
-    //                 'category_id' => $sale['categoryId'],
-    //                 'product_id' => $sale['productId'],
-    //                 'warranty_start_date' => $sale['startDate'],
-    //                 'warranty_end_date' => $sale['endDate'],
-    //                 'qr_code' => $sale['qr_code'],
-    //                 'description' => $sale['description'],
-    //                 'sku' => $sale['sku'],
-    //             ]);
-    //         }
-
-    //         DB::commit();
-
-    //         return redirect()->route('sales.index')->with('success', 'Sales created successfully');
-    //     } catch (Exception $e) {
-    //         DB::rollBack();
-    //         Log::info('CREATE SALE ERROR');
-    //         Log::info($e);
-
-    //         return redirect()->back()->with('error', 'Error creating sale');
-    //     }
-    // }
-
-
 
     public function store(Request $request)
     {

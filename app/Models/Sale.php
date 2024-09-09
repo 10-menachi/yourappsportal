@@ -17,6 +17,7 @@ class Sale extends Model
         'slug',
         'description',
         'sku',
+        'qr_code'
     ];
 
     public function pro_category()

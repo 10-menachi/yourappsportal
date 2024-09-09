@@ -57,7 +57,11 @@ class ProductController extends Controller
                 return redirect()->back()->with('error', $validator->errors()->first());
             }
 
+            $lastProduct = Product::max('id');
+            $newId = $lastProduct + 1;
+
             Product::create([
+                'id' => $newId,
                 'category_id' => $data['category_id'],
                 'name' => $data['name'],
                 'model_number' => $data['model_number'],
@@ -70,7 +74,7 @@ class ProductController extends Controller
             return redirect()->route('products.index')->with('success', 'Product created successfully');
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('ERROR');
+            Log::error('CREATE PRODUCT ERROR');
             Log::error($e);
             return redirect()->back()->with('error', $e->getMessage());
         }

@@ -32,7 +32,6 @@
                 <div>
                     <div class="d-flex">
                         <div class="me-2">
-                            <!-- Updated to use data-bs attributes for triggering modal -->
                             <a href="{{ route('sales.file.upload') }}" data-bs-toggle="modal" data-bs-target="#salesModal"
                                 class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</a>
                             <a href="{{ route('sales.create') }}"
